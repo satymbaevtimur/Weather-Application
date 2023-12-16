@@ -1,9 +1,12 @@
 from flask import Flask, render_template, request
+from dotenv import load_dotenv
 
-import requests
+import os, requests
+
+load_dotenv()
 
 app = Flask(__name__)
-weather_api_token = '800b1154a23f431d947180647231512'
+weather_api_token = os.getenv('WEATHER_API_TOKEN')
 
 @app.route("/", methods=['GET'])
 def index():
@@ -21,8 +24,8 @@ def get_weather(city_name=''):
         weather_api_url = f"http://api.weatherapi.com/v1/current.json?key={weather_api_token}&q={city_name}"
     else:
         weather_api_url = f"http://api.weatherapi.com/v1/current.json?key={weather_api_token}&q=London"
+    
     response = requests.get(weather_api_url)
-
 
     return response.json()
 
